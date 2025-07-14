@@ -1,6 +1,7 @@
 import streamlit as st
 import requests
 import os
+import re
 
 # --- Groq API settings ---
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")  # or hardcode for testing
@@ -21,8 +22,7 @@ with st.form("comparison_form"):
 # --- Prompt Template ---
 def build_prompt(paper_a, paper_b):
     return f"""
-You are an expert research evaluator. Compare the two research papers below *strictly* based on their scientific content, and rate on a scale of 10.
-Do not consider author reputation, journal name, or citation count. Treat both as preprints.
+Compare the two research papers below *strictly* based on their scientific content, and rate on a scale of 10. Be very concise with your response.
 
 Evaluate and compare the following dimensions:
 1. Novelty and originality
@@ -48,7 +48,7 @@ def query_groq(prompt):
     payload = {
         "model": LLM_MODEL,
         "messages": [
-            {"role": "system", "content": "You are a professional scientific reviewer. Do not think aloud or explain your process—just provide the concise comparison output in structured form."},
+            {"role": "system", "content": "You are a professional scientific reviewer. Do not think aloud or explain your process—just provide the direct comparison output in structured form."},
             {"role": "user", "content": prompt}
         ],
         "temperature": 0.3
@@ -61,6 +61,15 @@ def query_groq(prompt):
         st.error(f"❌ Error {response.status_code}: {response.text}")
         return None
 
+# --- Extract <think> section and separate ---
+def split_thoughts(output):
+    match = re.search(r"<think>(.*?)</think>", output, flags=re.DOTALL)
+    if match:
+        thinking = match.group(1).strip()
+        final_output = re.sub(r"<think>.*?</think>", "", output, flags=re.DOTALL).strip()
+        return thinking, final_output
+    return None, output
+
 # --- Display Output ---
 if submitted:
     if not paper_a.strip() or not paper_b.strip():
@@ -71,5 +80,11 @@ if submitted:
             result = query_groq(full_prompt)
 
         if result:
-            st.markdown("### 🧾 Comparison Result")
-            st.markdown(result)
+            thinking, final_output = split_thoughts(result)
+
+            st.markdown("### 🧾 Final Comparison Result")
+            st.markdown(final_output)
+
+            if thinking:
+                with st.expander("🧠 Model's Internal Thought Process (click to expand)"):
+                    st.markdown(thinking)
