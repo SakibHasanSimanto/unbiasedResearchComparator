@@ -33,7 +33,7 @@ with st.form("comparison_form"):
 # --- Prompt Template ---
 def build_prompt(paper_a, paper_b):
     return f"""
-Compare the two research papers below *strictly* based on their scientific content, and rate on a scale of 10. Be very concise with your response.
+Compare the two research papers below *strictly* based on their scientific content, and rate on a scale of 10. Include final rating in the end of your response. Be very concise with your response.
 
 Explain shortly, evaluate, and compare the following dimensions:
 1. Novelty and originality
