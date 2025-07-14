@@ -82,7 +82,7 @@ if submitted:
         if result:
             thinking, final_output = split_thoughts(result)
 
-            st.markdown("### 🧾 Final Comparison Result")
+            st.markdown("### 🧾 Comparison Result")
             st.markdown(final_output)
 
             if thinking:
