@@ -6,12 +6,23 @@ import re
 # --- Groq API settings ---
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")  # or hardcode for testing
 GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
-LLM_MODEL = "deepseek-r1-distill-llama-70b"
+
+# --- Supported Models ---
+MODEL_OPTIONS = {
+    "DeepSeek R1 (70B Distill) ✅ [Recommended]": "deepseek-r1-distill-llama-70b",
+    "Meta LLaMA 3 (8B)": "llama3-8b-8192",
+    "Google Gemma 2 (9B Instruct)": "gemma-2-9b-it",
+    "Mistral SABA (24B)": "mistral-saba-24b"
+}
 
 # --- UI Header ---
 st.set_page_config(page_title="Unbiased Research Comparator", layout="centered")
 st.title("🔬 Unbiased Research Comparison Tool")
 st.markdown("Compare two research summaries without author or journal bias.")
+
+# --- Model Selector ---
+selected_model_label = st.selectbox("🤖 Choose a Model", list(MODEL_OPTIONS.keys()), index=0)
+LLM_MODEL = MODEL_OPTIONS[selected_model_label]
 
 # --- Input Sections ---
 with st.form("comparison_form"):
@@ -40,13 +51,13 @@ Evaluate and compare the following dimensions:
 """
 
 # --- Groq API Call ---
-def query_groq(prompt):
+def query_groq(prompt, model):
     headers = {
         "Authorization": f"Bearer {GROQ_API_KEY}",
         "Content-Type": "application/json"
     }
     payload = {
-        "model": LLM_MODEL,
+        "model": model,
         "messages": [
             {"role": "system", "content": "You are a professional scientific reviewer. Do not think aloud or explain your process—just provide the direct comparison output in structured form."},
             {"role": "user", "content": prompt}
@@ -75,14 +86,14 @@ if submitted:
     if not paper_a.strip() or not paper_b.strip():
         st.warning("Please fill in both paper summaries.")
     else:
-        with st.spinner("Analyzing with DeepSeek R1..."):
+        with st.spinner(f"Analyzing with {selected_model_label}..."):
             full_prompt = build_prompt(paper_a, paper_b)
-            result = query_groq(full_prompt)
+            result = query_groq(full_prompt, LLM_MODEL)
 
         if result:
             thinking, final_output = split_thoughts(result)
 
-            st.markdown("### 🧾 Comparison Result")
+            st.markdown("### 🧾 Final Comparison Result")
             st.markdown(final_output)
 
             if thinking:
