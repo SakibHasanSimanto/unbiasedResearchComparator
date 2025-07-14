@@ -35,7 +35,7 @@ def build_prompt(paper_a, paper_b):
     return f"""
 Compare the two research papers below *strictly* based on their scientific content, and rate on a scale of 10. Be very concise with your response.
 
-Evaluate and compare the following dimensions:
+Explain shortly, evaluate, and compare the following dimensions:
 1. Novelty and originality
 2. Scientific rigor and methodology
 3. Clarity of research goal and execution
