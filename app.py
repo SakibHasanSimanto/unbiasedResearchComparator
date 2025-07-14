@@ -11,7 +11,7 @@ GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions"
 MODEL_OPTIONS = {
     "DeepSeek R1 (70B Distill) ✅ [Recommended]": "deepseek-r1-distill-llama-70b",
     "Meta LLaMA 3 (8B)": "llama3-8b-8192",
-    "Google Gemma 2 (9B Instruct)": "gemma-2-9b-it",
+    "Google Gemma 2 (9B Instruct)": "gemma2-9b-it",
     "Mistral SABA (24B)": "mistral-saba-24b"
 }
 
