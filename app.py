@@ -22,7 +22,7 @@ with st.form("comparison_form"):
 def build_prompt(paper_a, paper_b):
     return f"""
 You are an expert research evaluator. Compare the two research papers below *strictly* based on their scientific content, and rate on a scale of 10.
-Do not consider author reputation, journal name, or citation count. Treat both as preprints. Maintain professionalism in your tone.
+Do not consider author reputation, journal name, or citation count. Treat both as preprints.
 
 Evaluate and compare the following dimensions:
 1. Novelty and originality
@@ -48,7 +48,7 @@ def query_groq(prompt):
     payload = {
         "model": LLM_MODEL,
         "messages": [
-            {"role": "system", "content": "You are a professional scientific reviewer. Do not think aloud or explain your process—just provide the direct comparison output in structured form."},
+            {"role": "system", "content": "You are a professional scientific reviewer. Do not think aloud or explain your process—just provide the concise comparison output in structured form."},
             {"role": "user", "content": prompt}
         ],
         "temperature": 0.3
