@@ -14,8 +14,8 @@ st.markdown("Compare two research summaries without author or journal bias.")
 
 # --- Input Sections ---
 with st.form("comparison_form"):
-    paper_a = st.text_area("📝 Paper A Summary (Structured)", height=300, placeholder="Title:\nAbstract:\nMethods:\nResults:\nContributions:\nLimitations:")
-    paper_b = st.text_area("📝 Paper B Summary (Structured)", height=300, placeholder="Title:\nAbstract:\nMethods:\nResults:\nContributions:\nLimitations:")
+    paper_a = st.text_area("📝 Paper A Summary (Structured) / Abstract", height=300, placeholder="Title:\nAbstract:\nMethods:\nResults:\nContributions:\nLimitations:")
+    paper_b = st.text_area("📝 Paper B Summary (Structured) / Abstract", height=300, placeholder="Title:\nAbstract:\nMethods:\nResults:\nContributions:\nLimitations:")
     submitted = st.form_submit_button("Compare")
 
 # --- Prompt Template ---
