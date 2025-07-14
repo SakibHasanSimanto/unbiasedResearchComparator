@@ -48,7 +48,7 @@ def query_groq(prompt):
     payload = {
         "model": LLM_MODEL,
         "messages": [
-            {"role": "system", "content": "You are a helpful and unbiased scientific reviewer."},
+            {"role": "system", "content": "You are a professional scientific reviewer. Do not think aloud or explain your process—just provide the direct comparison output in structured form."},
             {"role": "user", "content": prompt}
         ],
         "temperature": 0.3
@@ -66,7 +66,7 @@ if submitted:
     if not paper_a.strip() or not paper_b.strip():
         st.warning("Please fill in both paper summaries.")
     else:
-        with st.spinner("Analyzing with LLaMA 3..."):
+        with st.spinner("Analyzing with DeepSeek R1..."):
             full_prompt = build_prompt(paper_a, paper_b)
             result = query_groq(full_prompt)
 
