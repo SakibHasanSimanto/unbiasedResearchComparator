@@ -48,7 +48,7 @@ def query_groq(prompt):
     payload = {
         "model": LLM_MODEL,
         "messages": [
-            {"role": "system", "content": "You are a professional scientific reviewer. Do not think aloud or explain your process—just provide the direct comparison output in structured form."},
+            {"role": "system", "content": "You are a professional scientific reviewer. Maintain professionalism in your tone. Do not think aloud or explain your process—just provide the direct comparison output in structured form."},
             {"role": "user", "content": prompt}
         ],
         "temperature": 0.3
